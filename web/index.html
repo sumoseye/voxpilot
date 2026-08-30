@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VoxPilot</title>
+  <title>VoxPilot — voice telemetry</title>
   <link rel="stylesheet" href="/static/css/output.css" />
   <style>
     .page { display: none; }
@@ -12,23 +12,23 @@
 </head>
 <body class="min-h-screen bg-nb-bg">
 
-  <!-- ===== TOP NAV ===== -->
-  <nav class="border-b-3 border-nb-border bg-nb-surface">
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="border-b-3 border-nb-border-dark bg-nb-surface">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 bg-nb-accent border-3 border-nb-bg flex items-center justify-center">
-          <span class="text-nb-bg font-bold text-lg">V</span>
+      <div class="flex items-center gap-4">
+        <div class="w-9 h-9 bg-nb-orange border-3 border-nb-bg flex items-center justify-center">
+          <span class="text-nb-bg font-bold text-xl">V</span>
         </div>
-        <h1 class="text-xl font-bold text-nb-text tracking-wider">VOXPILOT</h1>
-        <span class="badge badge--live ml-2">
-          <span class="pulse-dot"></span> LIVE
+        <h1 class="text-lg font-bold text-nb-cream tracking-widest">VOXPILOT</h1>
+        <span class="badge badge--live">
+          <span class="pulse-dot"></span> LIVE POOL
         </span>
       </div>
-      <div class="flex gap-1">
-        <a href="#" class="nav-link active" data-page="home">HOME</a>
-        <a href="#" class="nav-link" data-page="call">CALL</a>
-        <a href="#" class="nav-link" data-page="dashboard">DASHBOARD</a>
-        <a href="#" class="nav-link" data-page="traces">TRACES</a>
+      <div class="flex gap-2">
+        <a href="#" class="nav-link active text-nb-muted hover:text-nb-cream" data-page="home">HOME</a>
+        <a href="#" class="nav-link text-nb-muted hover:text-nb-cream" data-page="call">CALL</a>
+        <a href="#" class="nav-link text-nb-muted hover:text-nb-cream" data-page="dashboard">DASHBOARD</a>
+        <a href="#" class="nav-link text-nb-muted hover:text-nb-cream" data-page="traces">TRACES</a>
       </div>
     </div>
   </nav>
@@ -36,18 +36,17 @@
   <!-- ===== HOME ===== -->
   <div id="page-home" class="page active">
     <div class="max-w-7xl mx-auto px-6 py-12">
-
       <!-- Hero -->
       <div class="brutal-card mb-8">
         <div class="flex items-start justify-between">
-          <div>
-            <h2 class="text-5xl font-bold text-nb-accent mb-4 leading-tight">
-              REAL-TIME<br/>VOICE AI
+          <div class="max-w-xl">
+            <h2 class="text-4xl font-bold text-nb-orange mb-4 leading-none uppercase">
+              Low Latency<br/>Voice Pipeline
             </h2>
-            <p class="text-nb-muted text-sm max-w-xl leading-relaxed">
-              Sub-200ms end-to-end voice pipeline. Groq LLM → Deepgram ASR →
-              Cartesia TTS. Browser WebRTC + Twilio PSTN.
-              Every turn traced to Langfuse.
+            <p class="text-nb-muted text-sm leading-relaxed">
+              Real-time WebRTC & SIP orchestration platform. Custom Silero-v5 VAD, 
+              Groq LLaMA pipeline, Cartesia Sonic-2 audio synthesis. Engineered with absolute 
+              zero visualization overhead.
             </p>
           </div>
           <div class="call-wave">
@@ -56,161 +55,141 @@
         </div>
       </div>
 
-      <!-- Pipeline Cards -->
+      <!-- Live metrics row -->
       <div class="grid grid-cols-4 gap-4 mb-8">
+        <div class="brutal-card brutal-card--orange">
+          <div class="text-4xl font-bold text-nb-orange" id="stat-asr">—</div>
+          <div class="text-[10px] uppercase tracking-wider text-nb-muted mt-2">ASR Engine</div>
+          <p class="text-nb-cream text-xs mt-1">Deepgram Nova-3</p>
+        </div>
         <div class="brutal-card">
-          <div class="metric-val text-nb-accent" id="stat-asr">—</div>
-          <div class="metric-label">ASR Engine</div>
-          <p class="text-nb-muted text-xs mt-2">Deepgram Nova-3</p>
+          <div class="text-4xl font-bold text-nb-cream" id="stat-llm">—</div>
+          <div class="text-[10px] uppercase tracking-wider text-nb-muted mt-2">Core model</div>
+          <p class="text-nb-muted text-xs mt-1">Groq LLaMA 3.3</p>
         </div>
-        <div class="brutal-card brutal-card--red">
-          <div class="metric-val text-nb-accent2" id="stat-llm">—</div>
-          <div class="metric-label">LLM</div>
-          <p class="text-nb-muted text-xs mt-2">Groq LLaMA 3.3 70B</p>
+        <div class="brutal-card">
+          <div class="text-4xl font-bold text-nb-cream" id="stat-tts">—</div>
+          <div class="text-[10px] uppercase tracking-wider text-nb-muted mt-2">TTS Synthesis</div>
+          <p class="text-nb-muted text-xs mt-1">Cartesia Sonic-2</p>
         </div>
-        <div class="brutal-card brutal-card--purple">
-          <div class="metric-val text-nb-accent3" id="stat-tts">—</div>
-          <div class="metric-label">TTS Engine</div>
-          <p class="text-nb-muted text-xs mt-2">Cartesia Sonic-2</p>
-        </div>
-        <div class="brutal-card brutal-card--yellow">
-          <div class="metric-val text-nb-yellow" id="stat-vad">—</div>
-          <div class="metric-label">VAD</div>
-          <p class="text-nb-muted text-xs mt-2">Silero v5 · 500ms gate</p>
+        <div class="brutal-card">
+          <div class="text-4xl font-bold text-nb-cream" id="stat-vad">—</div>
+          <div class="text-[10px] uppercase tracking-wider text-nb-muted mt-2">VAD Threshold</div>
+          <p class="text-nb-muted text-xs mt-1">500ms Silence Gate</p>
         </div>
       </div>
 
-      <!-- Architecture -->
-      <div class="brutal-card">
-        <h3 class="text-lg font-bold text-nb-accent mb-4">▸ ARCHITECTURE</h3>
+      <!-- Core Engine Schematics -->
+      <div class="brutal-card--flat border-3 border-nb-border-dark">
+        <h3 class="text-sm font-bold text-nb-cream uppercase tracking-widest mb-4">▸ Platform Blueprint</h3>
         <pre class="text-xs text-nb-muted leading-relaxed overflow-x-auto"><code>
-  Browser / Twilio PSTN
+  Web Client / Twilio SIP Trunk
         │
         ▼
-   WebRTC / SIP edge
+   WebRTC Gateway / Voice Edge
         │
         ▼
-  ┌─────────────────────────────────────────────┐
-  │         LiveKit Agents 1.0  (Worker)        │
-  │                                             │
-  │  ┌─────┐  ┌───────┐  ┌──────────┐  ┌─────┐│
-  │  │ ASR │  │VAD v5 │  │  Turn    │  │Tools││
-  │  │Nova3│  │Silero │  │Detector  │  │ ⚡  ││
-  │  │ 20ms│  │500ms  │  │score>0.6 │  │300ms││
-  │  └──┬──┘  └───┬───┘  └────┬─────┘  └──┬──┘│
-  │     └─────────┴───────────┘            │   │
-  │              │                         │   │
-  │              ▼                         │   │
-  │     ┌────────────────┐                 │   │
-  │     │  Groq LLM      │◄───────────────┘   │
-  │     │  LLaMA-3.3-70B │  (tool results)    │
-  │     │  streaming      │                    │
-  │     └───────┬────────┘                    │
-  │             ▼                              │
-  │     ┌────────────────┐                    │
-  │     │ Cartesia TTS   │                    │
-  │     │ Sonic-2        │                    │
-  │     │ TTFF < 200ms   │                    │
-  │     └───────┬────────┘                    │
-  └─────────────┼──────────────────────────────┘
-                │
-                ▼
-         Audio → Caller
-                │
-                ▼
-     OpenTelemetry → Langfuse
+  ┌─────────────────────────────────────────────────────────────┐
+  │         LiveKit Agent Worker Instance                       │
+  │                                                             │
+  │  ┌──────────────┐    ┌───────────────┐    ┌────────────────┐│
+  │  │ Deepgram Nova│    │ Silero VAD v5 │    │ Trace Exporter ││
+  │  │ 20ms Frames  │    │ 500ms Silence │    │ Langfuse Spans ││
+  │  └──────┬───────┘    └───────┬───────┘    └───────┬────────┘│
+  │         └───────────┬────────┘                    │         │
+  │                     ▼                             │         │
+  │              Groq Inference                       │         │
+  │              LLaMA 3.3 70B                        │         │
+  │                     │                             │         │
+  │                     ▼                             │         │
+  │              Cartesia Sonic-2  ───────────────────┘         │
+  │              Sub-200ms Synthesizer                          │
+  └─────────────────────────────────────────────────────────────┘
         </code></pre>
       </div>
     </div>
   </div>
 
-  <!-- ===== CALL (loaded via iframe approach but inline for SPA) ===== -->
+  <!-- ===== CALL ===== -->
   <div id="page-call" class="page">
     <div class="max-w-4xl mx-auto px-6 py-12">
-      <div class="brutal-card mb-6">
+      <div class="brutal-card brutal-card--orange mb-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-nb-accent">▸ VOICE CALL</h2>
+          <h2 class="text-lg font-bold text-nb-cream tracking-widest">▸ VOICE CONNECTION</h2>
           <div id="call-status" class="badge badge--idle">IDLE</div>
         </div>
 
-        <!-- Connection -->
         <div class="grid grid-cols-2 gap-4 mb-6">
           <div>
-            <label class="metric-label mb-2 block">ROOM NAME</label>
+            <label class="text-[10px] uppercase tracking-wider text-nb-muted mb-2 block">Room Endpoint</label>
             <input id="room-input" type="text" class="brutal-input" placeholder="vox-demo" value="vox-demo" />
           </div>
           <div>
-            <label class="metric-label mb-2 block">YOUR NAME</label>
+            <label class="text-[10px] uppercase tracking-wider text-nb-muted mb-2 block">Caller Identifier</label>
             <input id="identity-input" type="text" class="brutal-input" placeholder="caller-1" value="caller-1" />
           </div>
         </div>
 
         <div class="flex gap-4">
-          <button id="btn-connect" class="brutal-btn" onclick="startCall()">
+          <button id="btn-connect" class="brutal-btn brutal-btn--orange" onclick="startCall()">
             ⚡ CONNECT
           </button>
-          <button id="btn-disconnect" class="brutal-btn brutal-btn--red" onclick="endCall()" style="display:none">
-            ✕ DISCONNECT
+          <button id="btn-disconnect" class="brutal-btn" onclick="endCall()" style="display:none">
+            ✕ TERMINATE
           </button>
         </div>
       </div>
 
-      <!-- Live Viz -->
+      <!-- Realtime Visualizer Feed -->
       <div class="grid grid-cols-2 gap-4 mb-6">
         <div class="brutal-card">
-          <h3 class="metric-label mb-4">YOUR AUDIO</h3>
-          <div id="user-viz" class="flex items-end gap-[2px] h-16">
-            <!-- Bars injected by JS -->
-          </div>
+          <h3 class="text-[10px] uppercase tracking-wider text-nb-muted mb-4">LOCAL TRANSMIT (MIC)</h3>
+          <div id="user-viz" class="flex items-end gap-[2px] h-14"></div>
         </div>
-        <div class="brutal-card brutal-card--purple">
-          <h3 class="metric-label mb-4">AGENT AUDIO</h3>
-          <div id="agent-viz" class="flex items-end gap-[2px] h-16">
-          </div>
+        <div class="brutal-card">
+          <h3 class="text-[10px] uppercase tracking-wider text-nb-muted mb-4">AGENT RECEIVE (TTS)</h3>
+          <div id="agent-viz" class="flex items-end gap-[2px] h-14"></div>
         </div>
       </div>
 
-      <!-- Transcript -->
+      <!-- Streaming Transcript -->
       <div class="brutal-card">
-        <h3 class="text-lg font-bold text-nb-accent mb-4">▸ TRANSCRIPT</h3>
-        <div id="transcript-log" class="max-h-80 overflow-y-auto space-y-2 text-sm">
-          <p class="text-nb-muted italic">Transcript will appear here...</p>
+        <h3 class="text-sm font-bold text-nb-orange uppercase tracking-widest mb-4">▸ STREAMING TRANSCRIPT</h3>
+        <div id="transcript-log" class="max-h-64 overflow-y-auto space-y-3 pr-2 text-sm">
+          <p class="text-nb-muted italic text-xs">Awaiting voice connection activation...</p>
         </div>
       </div>
 
-      <!-- Metrics -->
+      <!-- Core SLA latency stats -->
       <div class="grid grid-cols-4 gap-4 mt-6">
         <div class="brutal-card text-center">
-          <div class="metric-val text-nb-accent" id="m-asr-ms">—</div>
-          <div class="metric-label">ASR ms</div>
+          <div class="text-2xl font-bold text-nb-cream" id="m-asr-ms">—</div>
+          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1">ASR Latency</div>
         </div>
-        <div class="brutal-card brutal-card--red text-center">
-          <div class="metric-val text-nb-accent2" id="m-llm-ms">—</div>
-          <div class="metric-label">LLM TTFT</div>
+        <div class="brutal-card text-center">
+          <div class="text-2xl font-bold text-nb-cream" id="m-llm-ms">—</div>
+          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1">LLM TTFT</div>
         </div>
-        <div class="brutal-card brutal-card--purple text-center">
-          <div class="metric-val text-nb-accent3" id="m-tts-ms">—</div>
-          <div class="metric-label">TTS TTFF</div>
+        <div class="brutal-card text-center text-nb-orange">
+          <div class="text-2xl font-bold text-nb-orange" id="m-tts-ms">—</div>
+          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1">TTS TTFF</div>
         </div>
-        <div class="brutal-card brutal-card--yellow text-center">
-          <div class="metric-val text-nb-yellow" id="m-e2e-ms">—</div>
-          <div class="metric-label">E2E ms</div>
+        <div class="brutal-card text-center">
+          <div class="text-2xl font-bold text-nb-cream" id="m-e2e-ms">—</div>
+          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1">E2E Turn</div>
         </div>
       </div>
 
-      <!-- PSTN -->
-      <div class="brutal-card mt-6">
-        <h3 class="text-lg font-bold text-nb-yellow mb-4">▸ PSTN / TWILIO</h3>
+      <!-- Outbound PSTN -->
+      <div class="brutal-card--flat border-3 border-nb-border-dark mt-6">
+        <h3 class="text-xs font-bold text-nb-cream uppercase tracking-widest mb-4">▸ OUTBOUND PSTN ROUTING</h3>
         <div class="flex gap-4 items-end">
           <div class="flex-1">
-            <label class="metric-label mb-2 block">PHONE NUMBER</label>
-            <input id="pstn-number" type="tel" class="brutal-input" placeholder="+1 555 123 4567" />
+            <label class="text-[9px] uppercase tracking-widest text-nb-muted mb-2 block">Destination Target E.164</label>
+            <input id="pstn-number" type="tel" class="brutal-input" placeholder="+15551234567" />
           </div>
-          <button class="brutal-btn" onclick="dialPSTN()">📞 DIAL OUT</button>
+          <button class="brutal-btn" onclick="dialPSTN()">📞 ROUTE CALL</button>
         </div>
-        <p class="text-nb-muted text-xs mt-3">
-          Inbound: Configure Twilio webhook → <code class="text-nb-cyan">/sip/twiml/inbound</code>
-        </p>
       </div>
     </div>
   </div>
@@ -219,54 +198,54 @@
   <div id="page-dashboard" class="page">
     <div class="max-w-7xl mx-auto px-6 py-12">
       <div class="flex items-center justify-between mb-8">
-        <h2 class="text-2xl font-bold text-nb-accent">▸ LIVE METRICS</h2>
+        <h2 class="text-lg font-bold text-nb-cream tracking-widest uppercase">▸ SYSTEM METRICS</h2>
         <div class="flex items-center gap-2">
           <span class="pulse-dot"></span>
-          <span class="text-xs text-nb-muted">STREAMING VIA WEBSOCKET</span>
+          <span class="text-[10px] text-nb-muted uppercase tracking-wider">WS TELEMETRY DISPATCHING</span>
         </div>
       </div>
 
-      <!-- Top stats -->
+      <!-- Row -->
       <div class="grid grid-cols-5 gap-4 mb-8">
         <div class="brutal-card text-center">
-          <div class="metric-val text-nb-accent" id="d-active">0</div>
-          <div class="metric-label">Active Calls</div>
+          <div class="text-3xl font-bold text-nb-orange" id="d-active">0</div>
+          <div class="text-[9px] uppercase tracking-widest text-nb-muted mt-1">Active Calls</div>
         </div>
         <div class="brutal-card text-center">
-          <div class="metric-val text-nb-text" id="d-total">0</div>
-          <div class="metric-label">Total Calls</div>
+          <div class="text-3xl font-bold text-nb-cream" id="d-total">0</div>
+          <div class="text-[9px] uppercase tracking-widest text-nb-muted mt-1">Total Calls</div>
         </div>
-        <div class="brutal-card brutal-card--red text-center">
-          <div class="metric-val text-nb-accent2" id="d-bargeins">0</div>
-          <div class="metric-label">Barge-Ins</div>
+        <div class="brutal-card text-center">
+          <div class="text-3xl font-bold text-nb-cream" id="d-bargeins">0</div>
+          <div class="text-[9px] uppercase tracking-widest text-nb-muted mt-1">Barge-Ins</div>
         </div>
-        <div class="brutal-card brutal-card--purple text-center">
-          <div class="metric-val text-nb-accent3" id="d-tools">0</div>
-          <div class="metric-label">Tool Calls</div>
+        <div class="brutal-card text-center">
+          <div class="text-3xl font-bold text-nb-cream" id="d-tools">0</div>
+          <div class="text-[9px] uppercase tracking-widest text-nb-muted mt-1">Tool Execs</div>
         </div>
-        <div class="brutal-card brutal-card--yellow text-center">
-          <div class="metric-val text-nb-yellow" id="d-p95">—</div>
-          <div class="metric-label">P95 E2E ms</div>
+        <div class="brutal-card brutal-card--orange text-center">
+          <div class="text-3xl font-bold text-nb-orange" id="d-p95">—</div>
+          <div class="text-[9px] uppercase tracking-widest text-nb-bg mt-1 bg-nb-orange font-bold">P95 SLA MS</div>
         </div>
       </div>
 
-      <!-- Charts -->
+      <!-- Metrics Breakdown Charts -->
       <div class="grid grid-cols-2 gap-4 mb-8">
         <div class="brutal-card">
-          <h3 class="metric-label mb-4">E2E LATENCY (LAST 60s)</h3>
-          <canvas id="chart-latency" height="200"></canvas>
+          <h3 class="text-[10px] uppercase tracking-wider text-nb-muted mb-4">E2E RESPONSE LATENCY (60S WINDOW)</h3>
+          <canvas id="chart-latency" height="180"></canvas>
         </div>
-        <div class="brutal-card brutal-card--red">
-          <h3 class="metric-label mb-4">ASR → LLM → TTS BREAKDOWN</h3>
-          <canvas id="chart-breakdown" height="200"></canvas>
+        <div class="brutal-card">
+          <h3 class="text-[10px] uppercase tracking-wider text-nb-muted mb-4">COMPONENT SLA COST DISTRIBUTION</h3>
+          <canvas id="chart-breakdown" height="180"></canvas>
         </div>
       </div>
 
-      <!-- Rooms -->
-      <div class="brutal-card">
-        <h3 class="text-lg font-bold text-nb-accent mb-4">▸ ACTIVE ROOMS</h3>
+      <!-- Active instances list -->
+      <div class="brutal-card--flat border-3 border-nb-border-dark">
+        <h3 class="text-xs font-bold text-nb-cream uppercase tracking-widest mb-4">▸ ROUTED CHANNELS</h3>
         <div id="rooms-list" class="space-y-2">
-          <p class="text-nb-muted text-sm">Loading rooms...</p>
+          <p class="text-nb-muted text-xs">Polling active routers...</p>
         </div>
       </div>
     </div>
@@ -276,24 +255,19 @@
   <div id="page-traces" class="page">
     <div class="max-w-7xl mx-auto px-6 py-12">
       <div class="flex items-center justify-between mb-8">
-        <h2 class="text-2xl font-bold text-nb-accent">▸ VOICE TRACES</h2>
-        <a href="#" class="brutal-btn brutal-btn--outline text-xs" onclick="loadTraces()">REFRESH</a>
+        <h2 class="text-lg font-bold text-nb-cream tracking-widest uppercase">▸ TELEMETRY SPANS</h2>
+        <a href="#" class="brutal-btn brutal-btn--outline text-xs" onclick="loadTraces()">REFRESH FEEDS</a>
       </div>
 
-      <div class="brutal-card mb-6">
-        <p class="text-nb-muted text-sm">
-          Each voice turn generates an OpenTelemetry trace exported to Langfuse.
-          Spans: <code class="text-nb-cyan">vad</code> →
-          <code class="text-nb-cyan">asr</code> →
-          <code class="text-nb-cyan">llm</code> →
-          <code class="text-nb-cyan">tts</code> →
-          <code class="text-nb-accent2">barge_in</code>
+      <div class="brutal-card brutal-card--orange mb-6">
+        <p class="text-nb-cream text-xs leading-relaxed">
+          Operational spans tracked using OpenTelemetry standard definitions. Custom traces are automatically 
+          shunted to Langfuse instances with millisecond timing fidelity.
         </p>
       </div>
 
-      <!-- Trace list -->
       <div id="traces-list" class="space-y-3">
-        <!-- Populated by JS -->
+        <!-- Spans injected by JS -->
       </div>
     </div>
   </div>

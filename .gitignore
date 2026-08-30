@@ -11,3 +11,6 @@ var/
 venv/
 .DS_Store
 .DS_Store?
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

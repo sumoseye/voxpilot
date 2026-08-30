@@ -1,6 +1,6 @@
 /*
-  VoxPilot Neubrutalist Dark Theme
-  Tailwind input file — processed by `npx tailwindcss`
+  VoxPilot Clean Neo-Brutalist Light Theme
+  Pistachio Green, Powder Blue, Butter Yellow, Soft Cream, Deep Black
 */
 @tailwind base;
 @tailwind components;
@@ -14,151 +14,148 @@
 }
 
 @layer base {
-  * {
-    @apply box-border;
-  }
   body {
-    @apply bg-nb-bg text-nb-text font-mono antialiased;
-    cursor: default;
+    @apply bg-nb-canvas text-nb-black font-mono antialiased;
   }
   ::selection {
-    @apply bg-nb-accent text-nb-bg;
+    @apply bg-nb-pistachio text-nb-black;
   }
+  /* Remove scrollbar clutter while keeping style */
   ::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-2.5 h-2.5;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-nb-bg;
+    @apply bg-nb-canvas border-l-3 border-nb-border;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-nb-border rounded-none border-2 border-nb-accent;
+    @apply bg-nb-black border-2 border-nb-canvas;
   }
 }
 
 @layer components {
-  /* === BRUTAL CARD === */
+  /* === SYSTEM CARDS === */
   .brutal-card {
-    @apply bg-nb-card border-3 border-nb-accent p-6 shadow-brutal
-           transition-all duration-150;
+    @apply bg-nb-surface border-3 border-nb-border p-6 shadow-brutal-black
+           transition-all duration-150 ease-out;
   }
   .brutal-card:hover {
-    @apply translate-x-[-2px] translate-y-[-2px] shadow-brutal-lg;
+    @apply translate-x-[-3px] translate-y-[-3px] shadow-brutal-double;
   }
-  .brutal-card--red {
-    @apply border-nb-accent2 shadow-brutal-red;
+  .brutal-card--pistachio {
+    @apply bg-nb-surface border-3 border-nb-border shadow-brutal-pistachio;
   }
-  .brutal-card--purple {
-    @apply border-nb-accent3 shadow-brutal-purple;
+  .brutal-card--powder {
+    @apply bg-nb-surface border-3 border-nb-border shadow-brutal-powder;
   }
-  .brutal-card--yellow {
-    @apply border-nb-yellow shadow-brutal-yellow;
+  .brutal-card--butter {
+    @apply bg-nb-surface border-3 border-nb-border shadow-brutal-butter;
+  }
+  .brutal-card--flat {
+    @apply bg-nb-surface border-3 border-nb-border p-6 shadow-none;
   }
 
-  /* === BRUTAL BUTTON === */
+  /* === BRUTAL BUTTONS === */
   .brutal-btn {
-    @apply inline-flex items-center gap-2 px-6 py-3
-           bg-nb-accent text-nb-bg font-bold text-sm uppercase tracking-wider
-           border-3 border-nb-bg shadow-[4px_4px_0px_0px_#0a0a0a]
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3
+           bg-nb-surface text-nb-black font-bold text-xs uppercase tracking-widest
+           border-3 border-nb-border shadow-brutal-black
            transition-all duration-100 cursor-pointer select-none;
   }
   .brutal-btn:hover {
-    @apply translate-x-[-2px] translate-y-[-2px]
-           shadow-[6px_6px_0px_0px_#0a0a0a];
+    @apply translate-x-[-2px] translate-y-[-2px] shadow-brutal-double;
   }
   .brutal-btn:active {
-    @apply translate-x-[2px] translate-y-[2px]
-           shadow-[0px_0px_0px_0px_#0a0a0a];
+    @apply translate-x-[1px] translate-y-[1px] shadow-[1px_1px_0px_0px_#121212];
   }
-  .brutal-btn--red {
-    @apply bg-nb-accent2;
+  .brutal-btn--pistachio {
+    @apply bg-nb-pistachio;
+  }
+  .brutal-btn--powder {
+    @apply bg-nb-powder;
+  }
+  .brutal-btn--butter {
+    @apply bg-nb-butter;
   }
   .brutal-btn--outline {
-    @apply bg-transparent text-nb-accent border-nb-accent
-           shadow-[4px_4px_0px_0px_#00ff88];
+    @apply bg-transparent text-nb-black border-nb-border;
   }
   .brutal-btn--outline:hover {
-    @apply bg-nb-accent text-nb-bg;
+    @apply bg-nb-black text-nb-canvas;
   }
 
-  /* === BRUTAL INPUT === */
+  /* === INPUTS === */
   .brutal-input {
-    @apply w-full bg-nb-bg border-3 border-nb-border px-4 py-3
-           text-nb-text font-mono text-sm
-           focus:border-nb-accent focus:outline-none
+    @apply w-full bg-nb-surface border-3 border-nb-border px-4 py-3
+           text-nb-black font-mono text-sm shadow-inner
+           focus:bg-nb-surface focus:outline-none focus:ring-2 focus:ring-nb-pistachio
            placeholder:text-nb-muted;
   }
 
-  /* === STATUS BADGE === */
+  /* === BADGES === */
   .badge {
-    @apply inline-flex items-center gap-1 px-2 py-0.5
-           text-[10px] font-bold uppercase tracking-widest
-           border-2;
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5
+           text-[10px] font-bold uppercase tracking-wider
+           border-3 border-nb-border bg-nb-surface shadow-[2px_2px_0px_0px_#121212];
   }
   .badge--live {
-    @apply border-nb-accent text-nb-accent;
+    @apply bg-nb-pistachio;
   }
   .badge--error {
-    @apply border-nb-accent2 text-nb-accent2;
+    @apply bg-nb-butter text-nb-black;
   }
   .badge--idle {
-    @apply border-nb-muted text-nb-muted;
+    @apply bg-nb-powder text-nb-black;
   }
 
-  /* === NAV === */
+  /* === NAV LINKS === */
   .nav-link {
-    @apply px-4 py-2 text-sm font-bold uppercase tracking-widest
-           text-nb-muted border-b-3 border-transparent
-           hover:text-nb-accent hover:border-nb-accent
+    @apply px-4 py-2 text-xs font-bold uppercase tracking-widest
+           text-nb-muted border-3 border-transparent
            transition-all duration-100;
   }
+  .nav-link:hover {
+    @apply text-nb-black;
+  }
   .nav-link.active {
-    @apply text-nb-accent border-nb-accent;
+    @apply text-nb-black bg-nb-surface border-nb-border shadow-[3px_3px_0px_0px_#121212];
   }
 
-  /* === AUDIO VISUALIZER === */
-  .viz-bar {
-    @apply bg-nb-accent transition-all duration-75;
-    min-height: 2px;
-  }
-
-  /* === TRACE TIMELINE === */
-  .trace-span {
-    @apply h-6 border-2 border-nb-bg relative;
-    min-width: 4px;
-  }
-
-  /* === METRIC VALUE === */
-  .metric-val {
-    @apply text-4xl font-bold tabular-nums leading-none;
-  }
-  .metric-label {
-    @apply text-[10px] uppercase tracking-[0.2em] text-nb-muted mt-1;
-  }
-
-  /* === PULSE DOT === */
-  .pulse-dot {
-    @apply w-2 h-2 rounded-full bg-nb-accent;
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
-  @keyframes pulse-glow {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
-    50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(0, 255, 136, 0); }
-  }
-
-  /* === CALL WAVE ANIMATION === */
+  /* === AUDIO WAVEFORM DISPLAY === */
   .call-wave {
-    @apply flex items-end gap-[3px] h-10;
+    @apply flex items-end gap-[4px] h-10;
   }
   .call-wave span {
-    @apply w-1 bg-nb-accent rounded-sm;
-    animation: wave 1.2s ease-in-out infinite;
+    @apply w-1.5 bg-nb-black rounded-none;
+    animation: wave-bounce 1.2s ease-in-out infinite;
   }
-  .call-wave span:nth-child(2) { animation-delay: 0.1s; }
-  .call-wave span:nth-child(3) { animation-delay: 0.2s; }
-  .call-wave span:nth-child(4) { animation-delay: 0.3s; }
+  .call-wave span:nth-child(2) { animation-delay: 0.1s; @apply bg-nb-pistachio; }
+  .call-wave span:nth-child(3) { animation-delay: 0.2s; @apply bg-nb-powder; }
+  .call-wave span:nth-child(4) { animation-delay: 0.3s; @apply bg-nb-butter; }
   .call-wave span:nth-child(5) { animation-delay: 0.4s; }
-  @keyframes wave {
-    0%, 100% { height: 4px; }
+  @keyframes wave-bounce {
+    0%, 100% { height: 6px; }
     50% { height: 32px; }
+  }
+
+  /* === AUDIO VISUALIZER BARS === */
+  .viz-bar {
+    @apply bg-nb-black transition-all duration-75;
+    min-height: 3px;
+  }
+
+  /* === TIMELINE SPANS === */
+  .trace-span {
+    @apply h-7 border-3 border-nb-border relative;
+    min-width: 8px;
+  }
+
+  /* === PULSE === */
+  .pulse-dot {
+    @apply w-2 h-2 rounded-full bg-nb-black;
+    animation: black-glow 2s ease-in-out infinite;
+  }
+  @keyframes black-glow {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(18, 18, 12, 0.4); }
+    50% { opacity: 0.5; box-shadow: 0 0 0 6px rgba(18, 18, 12, 0); }
   }
 }
