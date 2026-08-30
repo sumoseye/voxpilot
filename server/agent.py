@@ -69,39 +69,43 @@ def _get_voice_agent_class() -> Any:
 
 
 def _build_chat_context(system_prompt: str) -> llm.ChatContext:
-    """Build a ChatContext compatible with both list and method-based APIs."""
+    """Build a ChatContext compatible across LiveKit Agents versions without Pylance warnings."""
     ctx = llm.ChatContext()
-    if hasattr(ctx, "append"):
+
+    # Legacy LiveKit: dynamic getattr avoids static type checker errors
+    append_fn = getattr(ctx, "append", None)
+    if callable(append_fn):
         try:
-            ctx.append(role="system", text=system_prompt)
+            append_fn(role="system", text=system_prompt)
             return ctx
         except Exception:
             pass
 
-    if hasattr(llm.ChatMessage, "create"):
+    # Modern LiveKit 1.x: ChatContext.messages list
+    create_fn = getattr(llm.ChatMessage, "create", None)
+    if callable(create_fn):
         try:
-            msg = getattr(llm.ChatMessage, "create")(role="system", text=system_prompt)
+            msg = create_fn(role="system", text=system_prompt)
             ctx.messages.append(msg)
             return ctx
         except Exception:
             pass
 
     try:
-        msg = llm.ChatMessage(role="system", content=[system_prompt])  # type: ignore
+        msg = llm.ChatMessage(role="system", content=[system_prompt])  # type: ignore[arg-type]
         ctx.messages.append(msg)
         return ctx
     except Exception:
         pass
 
     try:
-        msg = llm.ChatMessage(role="system", content=system_prompt)  # type: ignore
+        msg = llm.ChatMessage(role="system", content=system_prompt)  # type: ignore[arg-type]
         ctx.messages.append(msg)
         return ctx
     except Exception:
         pass
 
     return ctx
-
 
 class TurnState:
     """Per-turn timing for trace spans."""
