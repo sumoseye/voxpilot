@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  # === FastAPI Server (UI + API) ===
+  voxpilot-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "${PORT:-8890}:8890"
+    env_file: .env
+    volumes:
+      - ./web:/app/web:ro
+    restart: unless-stopped
+    depends_on:
+      - livekit
+
+  # === LiveKit Agent Worker ===
+  voxpilot-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    env_file: .env
+    command: python -m server.agent start
+    restart: unless-stopped
+    depends_on:
+      - livekit
+
+  # === LiveKit Server (dev) ===
+  livekit:
+    image: livekit/livekit-server:v1.7
+    ports:
+      - "7880:7880"   # HTTP
+      - "7881:7881"   # WebRTC TCP
+      - "7882:7882/udp" # WebRTC UDP
+    environment:
+      - LIVEKIT_KEYS=${LIVEKIT_API_KEY}:${LIVEKIT_API_SECRET}
+    command: --dev --bind 0.0.0.0
+    restart: unless-stopped

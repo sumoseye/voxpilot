@@ -1,0 +1,11 @@
+{
+    "name": "voxpilot-ui",
+    "private": true,
+    "scripts": {
+        "css:build": "tailwindcss -i ./web/static/css/brutalist.css -o ./web/static/css/output.css --minify",
+        "css:watch": "tailwindcss -i ./web/static/css/brutalist.css -o ./web/static/css/output.css --watch"
+    },
+    "devDependencies": {
+        "tailwindcss": "^3.4.19"
+    }
+}

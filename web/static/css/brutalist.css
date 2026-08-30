@@ -1,0 +1,164 @@
+/*
+  VoxPilot Neubrutalist Dark Theme
+  Tailwind input file — processed by `npx tailwindcss`
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Space Mono";
+  src: url("/static/fonts/SpaceMono-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+  body {
+    @apply bg-nb-bg text-nb-text font-mono antialiased;
+    cursor: default;
+  }
+  ::selection {
+    @apply bg-nb-accent text-nb-bg;
+  }
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-nb-bg;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-nb-border rounded-none border-2 border-nb-accent;
+  }
+}
+
+@layer components {
+  /* === BRUTAL CARD === */
+  .brutal-card {
+    @apply bg-nb-card border-3 border-nb-accent p-6 shadow-brutal
+           transition-all duration-150;
+  }
+  .brutal-card:hover {
+    @apply translate-x-[-2px] translate-y-[-2px] shadow-brutal-lg;
+  }
+  .brutal-card--red {
+    @apply border-nb-accent2 shadow-brutal-red;
+  }
+  .brutal-card--purple {
+    @apply border-nb-accent3 shadow-brutal-purple;
+  }
+  .brutal-card--yellow {
+    @apply border-nb-yellow shadow-brutal-yellow;
+  }
+
+  /* === BRUTAL BUTTON === */
+  .brutal-btn {
+    @apply inline-flex items-center gap-2 px-6 py-3
+           bg-nb-accent text-nb-bg font-bold text-sm uppercase tracking-wider
+           border-3 border-nb-bg shadow-[4px_4px_0px_0px_#0a0a0a]
+           transition-all duration-100 cursor-pointer select-none;
+  }
+  .brutal-btn:hover {
+    @apply translate-x-[-2px] translate-y-[-2px]
+           shadow-[6px_6px_0px_0px_#0a0a0a];
+  }
+  .brutal-btn:active {
+    @apply translate-x-[2px] translate-y-[2px]
+           shadow-[0px_0px_0px_0px_#0a0a0a];
+  }
+  .brutal-btn--red {
+    @apply bg-nb-accent2;
+  }
+  .brutal-btn--outline {
+    @apply bg-transparent text-nb-accent border-nb-accent
+           shadow-[4px_4px_0px_0px_#00ff88];
+  }
+  .brutal-btn--outline:hover {
+    @apply bg-nb-accent text-nb-bg;
+  }
+
+  /* === BRUTAL INPUT === */
+  .brutal-input {
+    @apply w-full bg-nb-bg border-3 border-nb-border px-4 py-3
+           text-nb-text font-mono text-sm
+           focus:border-nb-accent focus:outline-none
+           placeholder:text-nb-muted;
+  }
+
+  /* === STATUS BADGE === */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5
+           text-[10px] font-bold uppercase tracking-widest
+           border-2;
+  }
+  .badge--live {
+    @apply border-nb-accent text-nb-accent;
+  }
+  .badge--error {
+    @apply border-nb-accent2 text-nb-accent2;
+  }
+  .badge--idle {
+    @apply border-nb-muted text-nb-muted;
+  }
+
+  /* === NAV === */
+  .nav-link {
+    @apply px-4 py-2 text-sm font-bold uppercase tracking-widest
+           text-nb-muted border-b-3 border-transparent
+           hover:text-nb-accent hover:border-nb-accent
+           transition-all duration-100;
+  }
+  .nav-link.active {
+    @apply text-nb-accent border-nb-accent;
+  }
+
+  /* === AUDIO VISUALIZER === */
+  .viz-bar {
+    @apply bg-nb-accent transition-all duration-75;
+    min-height: 2px;
+  }
+
+  /* === TRACE TIMELINE === */
+  .trace-span {
+    @apply h-6 border-2 border-nb-bg relative;
+    min-width: 4px;
+  }
+
+  /* === METRIC VALUE === */
+  .metric-val {
+    @apply text-4xl font-bold tabular-nums leading-none;
+  }
+  .metric-label {
+    @apply text-[10px] uppercase tracking-[0.2em] text-nb-muted mt-1;
+  }
+
+  /* === PULSE DOT === */
+  .pulse-dot {
+    @apply w-2 h-2 rounded-full bg-nb-accent;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(0, 255, 136, 0); }
+  }
+
+  /* === CALL WAVE ANIMATION === */
+  .call-wave {
+    @apply flex items-end gap-[3px] h-10;
+  }
+  .call-wave span {
+    @apply w-1 bg-nb-accent rounded-sm;
+    animation: wave 1.2s ease-in-out infinite;
+  }
+  .call-wave span:nth-child(2) { animation-delay: 0.1s; }
+  .call-wave span:nth-child(3) { animation-delay: 0.2s; }
+  .call-wave span:nth-child(4) { animation-delay: 0.3s; }
+  .call-wave span:nth-child(5) { animation-delay: 0.4s; }
+  @keyframes wave {
+    0%, 100% { height: 4px; }
+    50% { height: 32px; }
+  }
+}
