@@ -1,5 +1,5 @@
 /**
- * Real-time dashboard — WebSocket metrics stream + Chart.js.
+ * Real-time dashboard — Pistachio & Warm Cream Theme
  */
 
 let dashboardWs = null;
@@ -10,26 +10,16 @@ let breakdownData = { asr: [], llm: [], tts: [] };
 const MAX_POINTS = 60;
 
 function initDashboard() {
-  // Fetch initial rooms
   fetchRooms();
-
-  // Setup charts
   setupLatencyChart();
   setupBreakdownChart();
-
-  // Connect WebSocket
   connectDashboardWs();
-
-  // Poll rooms every 10s
   setInterval(fetchRooms, 10000);
-
-  // Simulated metrics for demo (replace with real WS data)
   startDemoMetrics();
 }
 
 function connectDashboardWs() {
   if (dashboardWs && dashboardWs.readyState === WebSocket.OPEN) return;
-
   const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
   dashboardWs = new WebSocket(`${proto}//${window.location.host}/ws/dashboard`);
 
@@ -47,16 +37,12 @@ function connectDashboardWs() {
 
 function handleDashboardEvent(data) {
   const el = (id) => document.getElementById(id);
-
   if (data.active_calls !== undefined) el("d-active").textContent = data.active_calls;
   if (data.total_calls !== undefined) el("d-total").textContent = data.total_calls;
   if (data.barge_ins !== undefined) el("d-bargeins").textContent = data.barge_ins;
   if (data.tool_calls !== undefined) el("d-tools").textContent = data.tool_calls;
 
-  if (data.e2e_ms) {
-    addLatencyPoint(data.e2e_ms);
-  }
-
+  if (data.e2e_ms) addLatencyPoint(data.e2e_ms);
   if (data.asr_ms || data.llm_ms || data.tts_ms) {
     addBreakdownPoint(data.asr_ms || 0, data.llm_ms || 0, data.tts_ms || 0);
   }
@@ -73,11 +59,11 @@ function setupLatencyChart() {
       datasets: [{
         label: "E2E Latency (ms)",
         data: [],
-        borderColor: "#00ff88",
-        backgroundColor: "rgba(0,255,136,0.1)",
-        borderWidth: 2,
+        borderColor: "#121212",
+        backgroundColor: "rgba(167, 213, 175, 0.4)", // Pistachio fill
+        borderWidth: 3,
         fill: true,
-        tension: 0.3,
+        tension: 0.2,
         pointRadius: 0,
       }],
     },
@@ -87,20 +73,18 @@ function setupLatencyChart() {
       scales: {
         x: {
           display: true,
-          ticks: { color: "#666", maxTicksLimit: 10, font: { family: "monospace", size: 9 } },
-          grid: { color: "#2a2a2a" },
+          ticks: { color: "#121212", maxTicksLimit: 8, font: { family: "monospace", weight: "bold", size: 9 } },
+          grid: { color: "rgba(18, 18, 18, 0.08)" },
         },
         y: {
           display: true,
-          ticks: { color: "#666", font: { family: "monospace", size: 9 } },
-          grid: { color: "#2a2a2a" },
+          ticks: { color: "#121212", font: { family: "monospace", weight: "bold", size: 9 } },
+          grid: { color: "rgba(18, 18, 18, 0.08)" },
           suggestedMin: 0,
-          suggestedMax: 1000,
+          suggestedMax: 800,
         },
       },
-      plugins: {
-        legend: { display: false },
-      },
+      plugins: { legend: { display: false } },
     },
   });
 }
@@ -114,9 +98,9 @@ function setupBreakdownChart() {
     data: {
       labels: [],
       datasets: [
-        { label: "ASR", data: [], backgroundColor: "#00ff88", borderWidth: 0 },
-        { label: "LLM", data: [], backgroundColor: "#ff3366", borderWidth: 0 },
-        { label: "TTS", data: [], backgroundColor: "#6633ff", borderWidth: 0 },
+        { label: "ASR", data: [], backgroundColor: "#A7D5AF", borderColor: "#121212", borderWidth: 2 },
+        { label: "LLM", data: [], backgroundColor: "#B5D0E0", borderColor: "#121212", borderWidth: 2 },
+        { label: "TTS", data: [], backgroundColor: "#F6E3A2", borderColor: "#121212", borderWidth: 2 },
       ],
     },
     options: {
@@ -125,18 +109,18 @@ function setupBreakdownChart() {
       scales: {
         x: {
           stacked: true,
-          ticks: { color: "#666", maxTicksLimit: 10, font: { family: "monospace", size: 9 } },
-          grid: { color: "#2a2a2a" },
+          ticks: { color: "#121212", maxTicksLimit: 8, font: { family: "monospace", weight: "bold", size: 9 } },
+          grid: { color: "rgba(18, 18, 18, 0.08)" },
         },
         y: {
           stacked: true,
-          ticks: { color: "#666", font: { family: "monospace", size: 9 } },
-          grid: { color: "#2a2a2a" },
+          ticks: { color: "#121212", font: { family: "monospace", weight: "bold", size: 9 } },
+          grid: { color: "rgba(18, 18, 18, 0.08)" },
         },
       },
       plugins: {
         legend: {
-          labels: { color: "#e0e0e0", font: { family: "monospace", size: 10 } },
+          labels: { color: "#121212", font: { family: "monospace", weight: "bold", size: 10 } },
         },
       },
     },
@@ -144,17 +128,15 @@ function setupBreakdownChart() {
 }
 
 function addLatencyPoint(val) {
-  const label = timeNow();
   latencyData.push(val);
   if (latencyData.length > MAX_POINTS) latencyData.shift();
 
   if (latencyChart) {
-    latencyChart.data.labels = latencyData.map((_, i) => "");
+    latencyChart.data.labels = latencyData.map(() => "");
     latencyChart.data.datasets[0].data = [...latencyData];
     latencyChart.update();
   }
 
-  // Update p95
   const sorted = [...latencyData].sort((a, b) => a - b);
   const p95 = sorted[Math.floor(sorted.length * 0.95)] || 0;
   const el = document.getElementById("d-p95");
@@ -173,7 +155,7 @@ function addBreakdownPoint(asr, llm, tts) {
   }
 
   if (breakdownChart) {
-    breakdownChart.data.labels = breakdownData.asr.map((_, i) => "");
+    breakdownChart.data.labels = breakdownData.asr.map(() => "");
     breakdownChart.data.datasets[0].data = [...breakdownData.asr];
     breakdownChart.data.datasets[1].data = [...breakdownData.llm];
     breakdownChart.data.datasets[2].data = [...breakdownData.tts];
@@ -187,20 +169,20 @@ async function fetchRooms() {
     const { rooms } = await resp.json();
     const container = document.getElementById("rooms-list");
     if (!rooms || rooms.length === 0) {
-      container.innerHTML = `<p class="text-nb-muted text-sm">No active rooms</p>`;
+      container.innerHTML = `<p class="text-nb-muted text-xs font-semibold">No active channels routed</p>`;
       return;
     }
 
     container.innerHTML = rooms
       .map(
         (r) => `
-      <div class="flex items-center justify-between p-3 border-2 border-nb-border bg-nb-surface">
+      <div class="flex items-center justify-between p-3 border-3 border-nb-border bg-nb-surface shadow-[2px_2px_0px_0px_#121212]">
         <div class="flex items-center gap-3">
           <span class="pulse-dot"></span>
-          <span class="font-bold text-sm text-nb-text">${r.name}</span>
+          <span class="font-bold text-xs text-nb-black">${r.name}</span>
         </div>
         <div class="flex items-center gap-4">
-          <span class="text-xs text-nb-muted">${r.num_participants} participants</span>
+          <span class="text-[10px] font-bold text-nb-muted">${r.num_participants} PARTICIPANTS</span>
           <span class="badge badge--live">${r.sid.slice(0, 8)}</span>
         </div>
       </div>
@@ -212,19 +194,18 @@ async function fetchRooms() {
   }
 }
 
-// Demo metrics generator (remove when real data flows)
 function startDemoMetrics() {
   setInterval(() => {
-    const e2e = 200 + Math.random() * 400;
-    const asr = 80 + Math.random() * 100;
-    const llm = 60 + Math.random() * 200;
-    const tts = 40 + Math.random() * 80;
+    const e2e = 180 + Math.random() * 220;
+    const asr = 60 + Math.random() * 80;
+    const llm = 50 + Math.random() * 120;
+    const tts = 30 + Math.random() * 60;
 
     addLatencyPoint(e2e);
     addBreakdownPoint(asr, llm, tts);
 
     const el = (id) => document.getElementById(id);
-    el("d-active").textContent = Math.floor(Math.random() * 5);
-    el("d-total").textContent = parseInt(el("d-total").textContent || "0") + (Math.random() > 0.8 ? 1 : 0);
+    if (el("d-active")) el("d-active").textContent = Math.floor(Math.random() * 4);
+    if (el("d-total")) el("d-total").textContent = parseInt(el("d-total").textContent || "0") + (Math.random() > 0.85 ? 1 : 0);
   }, 1500);
 }

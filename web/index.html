@@ -1,34 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VoxPilot — voice telemetry</title>
-  <link rel="stylesheet" href="/static/css/output.css" />
+  <link rel="stylesheet" href="/static/css/output.css?v=pistachio_cream_1" />
   <style>
     .page { display: none; }
     .page.active { display: block; }
   </style>
 </head>
-<body class="min-h-screen bg-nb-bg">
+<body class="min-h-screen bg-nb-canvas pb-16">
 
   <!-- ===== NAVIGATION ===== -->
-  <nav class="border-b-3 border-nb-border-dark bg-nb-surface">
-    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+  <nav class="border-b-3 border-nb-border bg-nb-canvas sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
       <div class="flex items-center gap-4">
-        <div class="w-9 h-9 bg-nb-orange border-3 border-nb-bg flex items-center justify-center">
-          <span class="text-nb-bg font-bold text-xl">V</span>
+        <div class="w-10 h-10 bg-nb-pistachio border-3 border-nb-border flex items-center justify-center shadow-[3px_3px_0px_0px_#121212]">
+          <span class="text-nb-black font-bold text-xl">V</span>
         </div>
-        <h1 class="text-lg font-bold text-nb-cream tracking-widest">VOXPILOT</h1>
+        <h1 class="text-md font-bold text-nb-black tracking-widest uppercase">VOXPILOT</h1>
         <span class="badge badge--live">
-          <span class="pulse-dot"></span> LIVE POOL
+          <span class="pulse-dot"></span> ORCHESTRATOR LIVE
         </span>
       </div>
       <div class="flex gap-2">
-        <a href="#" class="nav-link active text-nb-muted hover:text-nb-cream" data-page="home">HOME</a>
-        <a href="#" class="nav-link text-nb-muted hover:text-nb-cream" data-page="call">CALL</a>
-        <a href="#" class="nav-link text-nb-muted hover:text-nb-cream" data-page="dashboard">DASHBOARD</a>
-        <a href="#" class="nav-link text-nb-muted hover:text-nb-cream" data-page="traces">TRACES</a>
+        <a href="#" class="nav-link active" data-page="home">HOME</a>
+        <a href="#" class="nav-link" data-page="call">CALL</a>
+        <a href="#" class="nav-link" data-page="dashboard">DASHBOARD</a>
+        <a href="#" class="nav-link" data-page="traces">TRACES</a>
       </div>
     </div>
   </nav>
@@ -37,16 +37,15 @@
   <div id="page-home" class="page active">
     <div class="max-w-7xl mx-auto px-6 py-12">
       <!-- Hero -->
-      <div class="brutal-card mb-8">
+      <div class="brutal-card brutal-card--pistachio mb-8">
         <div class="flex items-start justify-between">
           <div class="max-w-xl">
-            <h2 class="text-4xl font-bold text-nb-orange mb-4 leading-none uppercase">
-              Low Latency<br/>Voice Pipeline
+            <h2 class="text-4xl font-bold text-nb-black mb-4 leading-none uppercase">
+              Low Latency<br/>Voice Platform
             </h2>
-            <p class="text-nb-muted text-sm leading-relaxed">
-              Real-time WebRTC & SIP orchestration platform. Custom Silero-v5 VAD, 
-              Groq LLaMA pipeline, Cartesia Sonic-2 audio synthesis. Engineered with absolute 
-              zero visualization overhead.
+            <p class="text-nb-muted text-sm leading-relaxed font-semibold">
+              Ultra-responsive real-time audio orchestration server. Features high-fidelity Silero-v5 VAD,
+              Groq LLaMA pipeline, and Cartesia Sonic-2 audio synthesis. Engineered for absolute transparency.
             </p>
           </div>
           <div class="call-wave">
@@ -55,34 +54,34 @@
         </div>
       </div>
 
-      <!-- Live metrics row -->
+      <!-- Core Specs Grid -->
       <div class="grid grid-cols-4 gap-4 mb-8">
-        <div class="brutal-card brutal-card--orange">
-          <div class="text-4xl font-bold text-nb-orange" id="stat-asr">—</div>
+        <div class="brutal-card brutal-card--pistachio">
+          <div class="text-4xl font-bold text-nb-black" id="stat-asr">—</div>
           <div class="text-[10px] uppercase tracking-wider text-nb-muted mt-2">ASR Engine</div>
-          <p class="text-nb-cream text-xs mt-1">Deepgram Nova-3</p>
+          <p class="text-nb-black font-bold text-xs mt-1">Deepgram Nova-3</p>
         </div>
-        <div class="brutal-card">
-          <div class="text-4xl font-bold text-nb-cream" id="stat-llm">—</div>
-          <div class="text-[10px] uppercase tracking-wider text-nb-muted mt-2">Core model</div>
-          <p class="text-nb-muted text-xs mt-1">Groq LLaMA 3.3</p>
+        <div class="brutal-card brutal-card--powder">
+          <div class="text-4xl font-bold text-nb-black" id="stat-llm">—</div>
+          <div class="text-[10px] uppercase tracking-wider text-nb-muted mt-2">Core Inference</div>
+          <p class="text-nb-black font-bold text-xs mt-1">Groq LLaMA 3.3</p>
         </div>
-        <div class="brutal-card">
-          <div class="text-4xl font-bold text-nb-cream" id="stat-tts">—</div>
+        <div class="brutal-card brutal-card--butter">
+          <div class="text-4xl font-bold text-nb-black" id="stat-tts">—</div>
           <div class="text-[10px] uppercase tracking-wider text-nb-muted mt-2">TTS Synthesis</div>
-          <p class="text-nb-muted text-xs mt-1">Cartesia Sonic-2</p>
+          <p class="text-nb-black font-bold text-xs mt-1">Cartesia Sonic-2</p>
         </div>
         <div class="brutal-card">
-          <div class="text-4xl font-bold text-nb-cream" id="stat-vad">—</div>
+          <div class="text-4xl font-bold text-nb-black" id="stat-vad">—</div>
           <div class="text-[10px] uppercase tracking-wider text-nb-muted mt-2">VAD Threshold</div>
-          <p class="text-nb-muted text-xs mt-1">500ms Silence Gate</p>
+          <p class="text-nb-black font-bold text-xs mt-1">500ms Silence Gate</p>
         </div>
       </div>
 
-      <!-- Core Engine Schematics -->
-      <div class="brutal-card--flat border-3 border-nb-border-dark">
-        <h3 class="text-sm font-bold text-nb-cream uppercase tracking-widest mb-4">▸ Platform Blueprint</h3>
-        <pre class="text-xs text-nb-muted leading-relaxed overflow-x-auto"><code>
+      <!-- System Schematics -->
+      <div class="brutal-card--flat">
+        <h3 class="text-xs font-bold text-nb-black uppercase tracking-widest mb-4">▸ Channel Architecture</h3>
+        <pre class="text-xs text-nb-muted leading-relaxed overflow-x-auto bg-nb-canvas p-6 border-3 border-nb-border"><code>
   Web Client / Twilio SIP Trunk
         │
         ▼
@@ -113,82 +112,82 @@
   <!-- ===== CALL ===== -->
   <div id="page-call" class="page">
     <div class="max-w-4xl mx-auto px-6 py-12">
-      <div class="brutal-card brutal-card--orange mb-6">
+      <div class="brutal-card brutal-card--pistachio mb-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-lg font-bold text-nb-cream tracking-widest">▸ VOICE CONNECTION</h2>
+          <h2 class="text-sm font-bold text-nb-black tracking-widest uppercase">▸ VOICE INTERACTION</h2>
           <div id="call-status" class="badge badge--idle">IDLE</div>
         </div>
 
         <div class="grid grid-cols-2 gap-4 mb-6">
           <div>
-            <label class="text-[10px] uppercase tracking-wider text-nb-muted mb-2 block">Room Endpoint</label>
+            <label class="text-[10px] uppercase tracking-wider text-nb-muted mb-2 block font-bold">Room Endpoint</label>
             <input id="room-input" type="text" class="brutal-input" placeholder="vox-demo" value="vox-demo" />
           </div>
           <div>
-            <label class="text-[10px] uppercase tracking-wider text-nb-muted mb-2 block">Caller Identifier</label>
+            <label class="text-[10px] uppercase tracking-wider text-nb-muted mb-2 block font-bold">Caller Identifier</label>
             <input id="identity-input" type="text" class="brutal-input" placeholder="caller-1" value="caller-1" />
           </div>
         </div>
 
         <div class="flex gap-4">
-          <button id="btn-connect" class="brutal-btn brutal-btn--orange" onclick="startCall()">
-            ⚡ CONNECT
+          <button id="btn-connect" class="brutal-btn brutal-btn--pistachio" onclick="startCall()">
+            ⚡ CONNECT CALL
           </button>
-          <button id="btn-disconnect" class="brutal-btn" onclick="endCall()" style="display:none">
+          <button id="btn-disconnect" class="brutal-btn brutal-btn--butter" onclick="endCall()" style="display:none">
             ✕ TERMINATE
           </button>
         </div>
       </div>
 
-      <!-- Realtime Visualizer Feed -->
+      <!-- Live Dual Visualizers -->
       <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="brutal-card">
-          <h3 class="text-[10px] uppercase tracking-wider text-nb-muted mb-4">LOCAL TRANSMIT (MIC)</h3>
-          <div id="user-viz" class="flex items-end gap-[2px] h-14"></div>
+        <div class="brutal-card brutal-card--pistachio">
+          <h3 class="text-[10px] uppercase tracking-wider text-nb-black mb-4 font-bold">LOCAL TRANSMIT (MIC)</h3>
+          <div id="user-viz" class="flex items-end gap-[3px] h-14"></div>
         </div>
-        <div class="brutal-card">
-          <h3 class="text-[10px] uppercase tracking-wider text-nb-muted mb-4">AGENT RECEIVE (TTS)</h3>
-          <div id="agent-viz" class="flex items-end gap-[2px] h-14"></div>
+        <div class="brutal-card brutal-card--powder">
+          <h3 class="text-[10px] uppercase tracking-wider text-nb-black mb-4 font-bold">AGENT RECEIVE (TTS)</h3>
+          <div id="agent-viz" class="flex items-end gap-[3px] h-14"></div>
         </div>
       </div>
 
       <!-- Streaming Transcript -->
       <div class="brutal-card">
-        <h3 class="text-sm font-bold text-nb-orange uppercase tracking-widest mb-4">▸ STREAMING TRANSCRIPT</h3>
-        <div id="transcript-log" class="max-h-64 overflow-y-auto space-y-3 pr-2 text-sm">
+        <h3 class="text-xs font-bold text-nb-black uppercase tracking-widest mb-4">▸ STREAMING TRANSCRIPT</h3>
+        <div id="transcript-log" class="max-h-64 overflow-y-auto space-y-3 pr-2 text-sm bg-nb-canvas p-4 border-3 border-nb-border">
           <p class="text-nb-muted italic text-xs">Awaiting voice connection activation...</p>
         </div>
       </div>
 
-      <!-- Core SLA latency stats -->
+      <!-- Timing Stats -->
       <div class="grid grid-cols-4 gap-4 mt-6">
         <div class="brutal-card text-center">
-          <div class="text-2xl font-bold text-nb-cream" id="m-asr-ms">—</div>
-          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1">ASR Latency</div>
+          <div class="text-2xl font-bold text-nb-black" id="m-asr-ms">—</div>
+          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1 font-bold">ASR Latency</div>
         </div>
         <div class="brutal-card text-center">
-          <div class="text-2xl font-bold text-nb-cream" id="m-llm-ms">—</div>
-          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1">LLM TTFT</div>
+          <div class="text-2xl font-bold text-nb-black" id="m-llm-ms">—</div>
+          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1 font-bold">LLM TTFT</div>
         </div>
-        <div class="brutal-card text-center text-nb-orange">
-          <div class="text-2xl font-bold text-nb-orange" id="m-tts-ms">—</div>
-          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1">TTS TTFF</div>
+        <div class="brutal-card text-center brutal-card--butter">
+          <div class="text-2xl font-bold text-nb-black" id="m-tts-ms">—</div>
+          <div class="text-[9px] uppercase tracking-wider text-nb-black mt-1 font-bold">TTS TTFF</div>
         </div>
         <div class="brutal-card text-center">
-          <div class="text-2xl font-bold text-nb-cream" id="m-e2e-ms">—</div>
-          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1">E2E Turn</div>
+          <div class="text-2xl font-bold text-nb-black" id="m-e2e-ms">—</div>
+          <div class="text-[9px] uppercase tracking-wider text-nb-muted mt-1 font-bold">E2E Turn</div>
         </div>
       </div>
 
       <!-- Outbound PSTN -->
-      <div class="brutal-card--flat border-3 border-nb-border-dark mt-6">
-        <h3 class="text-xs font-bold text-nb-cream uppercase tracking-widest mb-4">▸ OUTBOUND PSTN ROUTING</h3>
+      <div class="brutal-card--flat mt-6">
+        <h3 class="text-xs font-bold text-nb-black uppercase tracking-widest mb-4">▸ OUTBOUND PSTN ROUTING</h3>
         <div class="flex gap-4 items-end">
           <div class="flex-1">
-            <label class="text-[9px] uppercase tracking-widest text-nb-muted mb-2 block">Destination Target E.164</label>
+            <label class="text-[9px] uppercase tracking-widest text-nb-muted mb-2 block font-bold">Destination Target E.164</label>
             <input id="pstn-number" type="tel" class="brutal-input" placeholder="+15551234567" />
           </div>
-          <button class="brutal-btn" onclick="dialPSTN()">📞 ROUTE CALL</button>
+          <button class="brutal-btn brutal-btn--powder" onclick="dialPSTN()">📞 ROUTE CALL</button>
         </div>
       </div>
     </div>
@@ -198,54 +197,54 @@
   <div id="page-dashboard" class="page">
     <div class="max-w-7xl mx-auto px-6 py-12">
       <div class="flex items-center justify-between mb-8">
-        <h2 class="text-lg font-bold text-nb-cream tracking-widest uppercase">▸ SYSTEM METRICS</h2>
+        <h2 class="text-sm font-bold text-nb-black tracking-widest uppercase">▸ SYSTEM METRICS</h2>
         <div class="flex items-center gap-2">
           <span class="pulse-dot"></span>
-          <span class="text-[10px] text-nb-muted uppercase tracking-wider">WS TELEMETRY DISPATCHING</span>
+          <span class="text-[10px] text-nb-black uppercase tracking-wider font-bold">WS TELEMETRY DISPATCHING</span>
         </div>
       </div>
 
-      <!-- Row -->
+      <!-- Quick Metrics Grid -->
       <div class="grid grid-cols-5 gap-4 mb-8">
-        <div class="brutal-card text-center">
-          <div class="text-3xl font-bold text-nb-orange" id="d-active">0</div>
-          <div class="text-[9px] uppercase tracking-widest text-nb-muted mt-1">Active Calls</div>
+        <div class="brutal-card brutal-card--pistachio text-center">
+          <div class="text-3xl font-bold text-nb-black" id="d-active">0</div>
+          <div class="text-[9px] uppercase tracking-widest text-nb-black font-bold mt-1">Active Calls</div>
         </div>
         <div class="brutal-card text-center">
-          <div class="text-3xl font-bold text-nb-cream" id="d-total">0</div>
+          <div class="text-3xl font-bold text-nb-black" id="d-total">0</div>
           <div class="text-[9px] uppercase tracking-widest text-nb-muted mt-1">Total Calls</div>
         </div>
         <div class="brutal-card text-center">
-          <div class="text-3xl font-bold text-nb-cream" id="d-bargeins">0</div>
+          <div class="text-3xl font-bold text-nb-black" id="d-bargeins">0</div>
           <div class="text-[9px] uppercase tracking-widest text-nb-muted mt-1">Barge-Ins</div>
         </div>
         <div class="brutal-card text-center">
-          <div class="text-3xl font-bold text-nb-cream" id="d-tools">0</div>
+          <div class="text-3xl font-bold text-nb-black" id="d-tools">0</div>
           <div class="text-[9px] uppercase tracking-widest text-nb-muted mt-1">Tool Execs</div>
         </div>
-        <div class="brutal-card brutal-card--orange text-center">
-          <div class="text-3xl font-bold text-nb-orange" id="d-p95">—</div>
-          <div class="text-[9px] uppercase tracking-widest text-nb-bg mt-1 bg-nb-orange font-bold">P95 SLA MS</div>
+        <div class="brutal-card brutal-card--butter text-center">
+          <div class="text-3xl font-bold text-nb-black" id="d-p95">—</div>
+          <div class="text-[9px] uppercase tracking-widest text-nb-black mt-1 font-bold">P95 SLA MS</div>
         </div>
       </div>
 
-      <!-- Metrics Breakdown Charts -->
+      <!-- Breakdown Charts -->
       <div class="grid grid-cols-2 gap-4 mb-8">
         <div class="brutal-card">
-          <h3 class="text-[10px] uppercase tracking-wider text-nb-muted mb-4">E2E RESPONSE LATENCY (60S WINDOW)</h3>
+          <h3 class="text-[10px] uppercase tracking-wider text-nb-black mb-4 font-bold">E2E RESPONSE LATENCY (60S WINDOW)</h3>
           <canvas id="chart-latency" height="180"></canvas>
         </div>
         <div class="brutal-card">
-          <h3 class="text-[10px] uppercase tracking-wider text-nb-muted mb-4">COMPONENT SLA COST DISTRIBUTION</h3>
+          <h3 class="text-[10px] uppercase tracking-wider text-nb-black mb-4 font-bold">COMPONENT SLA COST DISTRIBUTION</h3>
           <canvas id="chart-breakdown" height="180"></canvas>
         </div>
       </div>
 
       <!-- Active instances list -->
-      <div class="brutal-card--flat border-3 border-nb-border-dark">
-        <h3 class="text-xs font-bold text-nb-cream uppercase tracking-widest mb-4">▸ ROUTED CHANNELS</h3>
+      <div class="brutal-card--flat">
+        <h3 class="text-xs font-bold text-nb-black uppercase tracking-widest mb-4">▸ ROUTED CHANNELS</h3>
         <div id="rooms-list" class="space-y-2">
-          <p class="text-nb-muted text-xs">Polling active routers...</p>
+          <p class="text-nb-muted text-xs font-bold">Polling active routers...</p>
         </div>
       </div>
     </div>
@@ -255,25 +254,25 @@
   <div id="page-traces" class="page">
     <div class="max-w-7xl mx-auto px-6 py-12">
       <div class="flex items-center justify-between mb-8">
-        <h2 class="text-lg font-bold text-nb-cream tracking-widest uppercase">▸ TELEMETRY SPANS</h2>
+        <h2 class="text-sm font-bold text-nb-black tracking-widest uppercase">▸ TELEMETRY SPANS</h2>
         <a href="#" class="brutal-btn brutal-btn--outline text-xs" onclick="loadTraces()">REFRESH FEEDS</a>
       </div>
 
-      <div class="brutal-card brutal-card--orange mb-6">
-        <p class="text-nb-cream text-xs leading-relaxed">
-          Operational spans tracked using OpenTelemetry standard definitions. Custom traces are automatically 
-          shunted to Langfuse instances with millisecond timing fidelity.
+      <div class="brutal-card brutal-card--powder mb-6">
+        <p class="text-nb-black text-xs leading-relaxed font-semibold">
+          Operational spans tracked using OpenTelemetry definitions. Spans are automatically 
+          exported directly to your centralized Langfuse instance with millisecond precision.
         </p>
       </div>
 
       <div id="traces-list" class="space-y-3">
-        <!-- Spans injected by JS -->
+        <!-- Spans dynamically loaded -->
       </div>
     </div>
   </div>
 
   <!-- Scripts -->
-  <script src="/static/js/lk-sdk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/livekit-client@2.6.0/dist/livekit-client.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script src="/static/js/app.js"></script>
   <script src="/static/js/call-client.js"></script>

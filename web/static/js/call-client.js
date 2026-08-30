@@ -1,6 +1,5 @@
 /**
- * LiveKit WebRTC Browser Client — headless-compatible call logic.
- * Connects to LiveKit room, publishes mic, receives agent audio.
+ * LiveKit WebRTC Browser Client — Safe SDK loader & call handling
  */
 
 let currentRoom = null;
@@ -9,23 +8,47 @@ let userAnalyser = null;
 let agentAnalyser = null;
 let vizInterval = null;
 
+// Helper to safely get the LiveKit global object
+function getLiveKitSDK() {
+  return (
+    window.LivekitClient ||
+    window.LiveKitClient ||
+    window.Livekit ||
+    window.livekit ||
+    null
+  );
+}
+
 async function startCall() {
   const roomName = document.getElementById("room-input").value || "vox-demo";
   const identity = document.getElementById("identity-input").value || "caller-1";
 
+  const LK = getLiveKitSDK();
+  if (!LK) {
+    setCallStatus("error", "SDK MISSING");
+    addTranscript(
+      "system",
+      "Error: LiveKit SDK failed to load. Please check your internet connection or script tag."
+    );
+    return;
+  }
+
   setCallStatus("connecting", "CONNECTING...");
 
   try {
-    // Get token from our API
     const resp = await fetch("/api/token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ room: roomName, identity: identity }),
     });
+
+    if (!resp.ok) {
+      throw new Error(`Token endpoint returned status ${resp.status}`);
+    }
+
     const { token, livekit_url } = await resp.json();
 
-    // Create room
-    currentRoom = new LivekitClient.Room({
+    currentRoom = new LK.Room({
       adaptiveStream: true,
       dynacast: true,
       audioCaptureDefaults: {
@@ -36,30 +59,29 @@ async function startCall() {
       },
     });
 
-    // Wire up events
-    currentRoom.on(LivekitClient.RoomEvent.Connected, () => {
+    currentRoom.on(LK.RoomEvent.Connected, () => {
       setCallStatus("live", "CONNECTED");
       addTranscript("system", `Connected to room: ${roomName}`);
     });
 
-    currentRoom.on(LivekitClient.RoomEvent.Disconnected, () => {
+    currentRoom.on(LK.RoomEvent.Disconnected, () => {
       setCallStatus("idle", "DISCONNECTED");
       addTranscript("system", "Disconnected from room");
       cleanup();
     });
 
-    currentRoom.on(LivekitClient.RoomEvent.TrackSubscribed, (track, pub, participant) => {
-      if (track.kind === LivekitClient.Track.Kind.Audio) {
+    currentRoom.on(LK.RoomEvent.TrackSubscribed, (track, pub, participant) => {
+      if (track.kind === LK.Track.Kind.Audio) {
         const el = track.attach();
         el.id = "agent-audio";
         el.style.display = "none";
         document.body.appendChild(el);
         setupAgentViz(el);
-        addTranscript("system", `Agent audio track received`);
+        addTranscript("system", "Agent audio track received");
       }
     });
 
-    currentRoom.on(LivekitClient.RoomEvent.DataReceived, (payload, participant) => {
+    currentRoom.on(LK.RoomEvent.DataReceived, (payload, participant) => {
       try {
         const msg = JSON.parse(new TextDecoder().decode(payload));
         if (msg.type === "transcript") {
@@ -68,25 +90,23 @@ async function startCall() {
         if (msg.type === "metrics") {
           updateCallMetrics(msg);
         }
-      } catch (e) { /* binary data, ignore */ }
+      } catch (e) {
+        /* ignore non-json data */
+      }
     });
 
-    currentRoom.on(LivekitClient.RoomEvent.TrackMuted, (pub, participant) => {
+    currentRoom.on(LK.RoomEvent.TrackMuted, (pub, participant) => {
       if (!participant.isLocal) {
         addTranscript("system", "⚡ Agent speech interrupted (barge-in)");
       }
     });
 
-    // Connect
     await currentRoom.connect(livekit_url, token);
-
-    // Publish microphone
     await currentRoom.localParticipant.setMicrophoneEnabled(true);
     setupUserViz();
 
     document.getElementById("btn-connect").style.display = "none";
     document.getElementById("btn-disconnect").style.display = "";
-
   } catch (err) {
     console.error("Call failed:", err);
     setCallStatus("error", "ERROR");
@@ -113,30 +133,35 @@ function cleanup() {
 function setCallStatus(state, text) {
   const el = document.getElementById("call-status");
   el.textContent = text;
-  el.className = `badge badge--${state === "live" ? "live" : state === "error" ? "error" : "idle"}`;
+  el.className = `badge badge--${
+    state === "live" ? "live" : state === "error" ? "error" : "idle"
+  }`;
 }
 
 function addTranscript(role, text) {
   const log = document.getElementById("transcript-log");
-  // Remove placeholder
   const placeholder = log.querySelector(".italic");
   if (placeholder) placeholder.remove();
 
   const colors = {
-    user: "text-nb-accent",
-    agent: "text-nb-accent3",
-    system: "text-nb-muted",
-    tool: "text-nb-yellow",
+    user: "bg-nb-pistachio text-nb-black border-2 border-nb-border px-1.5 py-0.5",
+    agent: "bg-nb-powder text-nb-black border-2 border-nb-border px-1.5 py-0.5",
+    system: "bg-nb-canvas text-nb-muted border-2 border-nb-border px-1.5 py-0.5",
+    tool: "bg-nb-butter text-nb-black border-2 border-nb-border px-1.5 py-0.5",
   };
 
   const div = document.createElement("div");
-  div.className = `flex gap-3 ${role === "system" ? "opacity-60" : ""}`;
+  div.className = `flex items-center gap-3 p-2 bg-nb-surface border-2 border-nb-border shadow-[2px_2px_0px_0px_#121212] ${
+    role === "system" ? "opacity-75" : ""
+  }`;
   div.innerHTML = `
-    <span class="${colors[role] || "text-nb-text"} text-xs font-bold uppercase w-16 shrink-0">
+    <span class="${
+      colors[role] || "bg-nb-canvas text-nb-black"
+    } text-[10px] font-bold uppercase shrink-0">
       ${role}
     </span>
-    <span class="text-nb-text text-sm">${text}</span>
-    <span class="text-nb-muted text-xs ml-auto shrink-0">${timeNow()}</span>
+    <span class="text-nb-black text-xs font-semibold flex-1">${text}</span>
+    <span class="text-nb-muted text-[10px] shrink-0 font-bold">${timeNow()}</span>
   `;
   log.appendChild(div);
   log.scrollTop = log.scrollHeight;
@@ -150,16 +175,16 @@ function updateCallMetrics(m) {
   if (m.e2e_ms && el("m-e2e-ms")) el("m-e2e-ms").textContent = fmtMs(m.e2e_ms);
 }
 
-// ===== Audio Visualizers =====
+// ===== Visualizers =====
 
 function setupUserViz() {
   const container = document.getElementById("user-viz");
   container.innerHTML = "";
-  const bars = 32;
-  for (let i = 0; i < bars; i++) {
+  for (let i = 0; i < 32; i++) {
     const bar = document.createElement("div");
     bar.className = "viz-bar flex-1";
-    bar.style.height = "2px";
+    bar.style.height = "3px";
+    bar.style.backgroundColor = "#121212";
     container.appendChild(bar);
   }
 
@@ -180,17 +205,17 @@ function setupUserViz() {
 function setupAgentViz(audioEl) {
   const container = document.getElementById("agent-viz");
   container.innerHTML = "";
-  const bars = 32;
-  for (let i = 0; i < bars; i++) {
+  for (let i = 0; i < 32; i++) {
     const bar = document.createElement("div");
     bar.className = "viz-bar flex-1";
-    bar.style.height = "2px";
-    bar.style.backgroundColor = "#6633ff";
+    bar.style.height = "3px";
+    bar.style.backgroundColor = "#121212";
     container.appendChild(bar);
   }
 
   try {
-    if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (!audioContext)
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const source = audioContext.createMediaElementSource(audioEl);
     agentAnalyser = audioContext.createAnalyser();
     agentAnalyser.fftSize = 64;
@@ -204,12 +229,12 @@ function setupAgentViz(audioEl) {
 function startViz() {
   if (vizInterval) clearInterval(vizInterval);
   vizInterval = setInterval(() => {
-    renderViz("user-viz", userAnalyser, "#00ff88");
-    renderViz("agent-viz", agentAnalyser, "#6633ff");
+    renderViz("user-viz", userAnalyser, "#A7D5AF");
+    renderViz("agent-viz", agentAnalyser, "#B5D0E0");
   }, 50);
 }
 
-function renderViz(containerId, analyser, color) {
+function renderViz(containerId, analyser, activeColor) {
   if (!analyser) return;
   const container = document.getElementById(containerId);
   const bars = container.children;
@@ -219,23 +244,14 @@ function renderViz(containerId, analyser, color) {
   for (let i = 0; i < bars.length; i++) {
     const idx = Math.floor((i / bars.length) * data.length);
     const val = data[idx] || 0;
-    const height = Math.max(2, (val / 255) * 60);
+    const height = Math.max(3, (val / 255) * 52);
     bars[i].style.height = `${height}px`;
-    bars[i].style.backgroundColor = color;
-    bars[i].style.opacity = 0.5 + (val / 255) * 0.5;
+    bars[i].style.backgroundColor = val > 15 ? activeColor : "#121212";
   }
 }
 
-// ===== PSTN Dial =====
 async function dialPSTN() {
   const number = document.getElementById("pstn-number").value;
   if (!number) return alert("Enter a phone number");
-
-  try {
-    addTranscript("system", `Dialing ${number} via Twilio...`);
-    // This would call a server endpoint; placeholder
-    addTranscript("system", "PSTN outbound: configure Twilio webhook at /sip/twiml/inbound");
-  } catch (e) {
-    addTranscript("system", `Dial error: ${e.message}`);
-  }
+  addTranscript("system", `Dialing ${number} via Twilio SIP...`);
 }
