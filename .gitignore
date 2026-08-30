@@ -1,3 +1,13 @@
 .env
 node_modules
 .venv/
+__pycache__
+lib/
+lib64/
+parts/
+sdist/
+var/
+.venv/
+venv/
+.DS_Store
+.DS_Store?
